@@ -1,7 +1,6 @@
-
 # CopyClust
 
-A Copy-Number-Based Integrative Cluster Classification Scheme for Breast Cancer
+A Copy-Number-Based Integrative Cluster Classification Scheme for Breast Cancer Samples
 
 ## Installation
 

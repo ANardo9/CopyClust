@@ -5,7 +5,7 @@ Authors@R: c(
     person("Cameron", "Young", email = "cameron.young@cruk.cam.ac.uk", role = c("cre", "aut"), comment = c(ORCID = "0000-0001-7323-4834")),
     person("Oscar", "Rueda", email = "oscar.rueda@mrc-bsu.cam.ac.uk", role = "aut"))
 Description: What the package does in paragraph form. 
-License: CC BY 4.0
+License: MIT
 URL: https://github.com/camyoung54/CopyClust
 Imports: 
     dplyr (>= 1.0.10),
@@ -18,3 +18,5 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Depends: 
+    R (>= 2.10)
