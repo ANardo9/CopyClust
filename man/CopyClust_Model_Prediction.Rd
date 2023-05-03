@@ -4,13 +4,15 @@
 \alias{CopyClust_Model_Prediction}
 \title{CopyClust Model Prediction}
 \usage{
-CopyClust_Model_Prediction(data_input)
+CopyClust_Model_Prediction(data_input, model_approach = TRUE)
 }
 \arguments{
 \item{data_input}{A data frame with sample IDs as rows and 478 model features as columns.}
+
+\item{model_approach}{If TRUE, implement 10-class model approach. If FALSE, implement 6-class model approach with binary reclassification.}
 }
 \value{
-A numeric vector of predicted Integrative Cluster label.
+A numeric vector of predicted Integrative Cluster label according to model approach.
 }
 \description{
 CopyClust Model Prediction
