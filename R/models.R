@@ -57,6 +57,7 @@ CopyClust = function(data_input, model_approach = TRUE) {
     prediction = as.data.frame(rbind(samples_38_prediction, samples_47_prediction, samples_910_prediction, samples_15_prediction, other_samples))
     prediction = prediction[order(rownames(prediction)),,drop=FALSE]
 
+    #Return prediction
     return(prediction)
     }
 }
