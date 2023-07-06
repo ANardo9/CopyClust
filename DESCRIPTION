@@ -14,7 +14,8 @@ Imports:
     xgboost
 Suggests:
     ggplot2,
-    iC10
+    iC10,
+    rmarkdown
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true

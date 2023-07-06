@@ -13,7 +13,7 @@ CopyClust = function(data_input, model_approach = "10C") {
 
    return(prediction)
   }
-  else {
+  if (model_approach == "6C") {
     prediction = factor(predict(CopyClust_6_Class_Scale_Function_v2, data_input))
     levels(prediction) = c("1/5", "2", "3/8", "4/7", "6", "9/10")
     prediction = as.data.frame(prediction)
@@ -59,7 +59,10 @@ CopyClust = function(data_input, model_approach = "10C") {
 
     #Return prediction
     return(prediction)
-    }
+  }
+  else {
+    return("Incorrect Model Approach Parameter")
+  }
 }
 
 
