@@ -1,7 +1,7 @@
 #' CopyClust Model Prediction
 #'
 #' @param data_input A data frame with sample IDs as rows and 478 model features as columns.
-#' @param model_approach If TRUE, implement 10-class model approach. If FALSE, implement 6-class model approach with binary reclassification.
+#' @param model_approach If equal to "10C", implement 10-class model approach. Otherwise, will implement 6-class model approach with binary reclassification.
 #' @returns A numeric vector of predicted Integrative Cluster label according to model approach.
 
 CopyClust = function(data_input, model_approach = "10C") {

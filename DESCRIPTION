@@ -10,7 +10,8 @@ URL: https://github.com/camyoung54/CopyClust
 Imports: 
     dplyr (>= 1.0.10),
     tidyr (>= 1.2.1),
-    knitr
+    knitr,
+    xgboost
 Suggests:
     ggplot2,
     iC10
