@@ -1,7 +1,7 @@
 #' CopyClust Model Prediction
 #'
 #' @param data_input A data frame with sample IDs as rows and 478 model features as columns.
-#' @param model_approach If equal to "10C", implement 10-class model approach. Otherwise, will implement 6-class model approach with binary reclassification.
+#' @param model_approach If equal to "10C", implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification.
 #' @returns A numeric vector of predicted Integrative Cluster label according to model approach.
 
 CopyClust = function(data_input, model_approach = "10C") {
@@ -61,12 +61,15 @@ CopyClust = function(data_input, model_approach = "10C") {
     return(prediction)
   }
   else {
-    return("Incorrect Model Approach Parameter")
+    stop("Incorrect Model Approach Parameter")
   }
 }
 
-
-
+#' Format Data for CopyClust Function
+#'
+#' @param data_input A data frame representing the output of DNAcopy. Six columns: "ID", "chrom", "loc.start", "loc.end", "num.mark", "seg.mean"
+#' @param reference_genome Formats the genomic ranges to the appropriate reference genome. Valid inputs are "hg18", "hg19", and "hg38".
+#' @returns A data frame with sample IDs as rows and 478 model features as columns that can be used with the CopyClust function.
 
 
 

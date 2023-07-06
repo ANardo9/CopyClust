@@ -3,7 +3,7 @@
 \docType{data}
 \name{test_data}
 \alias{test_data}
-\title{CopyClust Example Data from TCGA}
+\title{CopyClust Example Data from TCGA Pre-Formatted}
 \format{
 \subsection{\code{test_data}}{
 
@@ -14,6 +14,6 @@ A 1075 by 478 matrix
 test_data
 }
 \description{
-Example data from TCGA samples used to test the package
+Example data from TCGA samples used to test the package pre-formatted for the CopyClust function.
 }
 \keyword{datasets}
