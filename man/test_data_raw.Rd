@@ -7,11 +7,7 @@
 \format{
 \subsection{\code{test_data_raw}}{
 
-<<<<<<< HEAD
-A 1075 by 478 matrix
-=======
 A 6 by 211907 matrix
->>>>>>> 3ad6b6b (added raw test data)
 }
 }
 \usage{
