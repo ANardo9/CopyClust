@@ -14,6 +14,6 @@ A 1075 by 2 matrix
 test_labels
 }
 \description{
-IntClust labels of example TCGA samples
+Gold standard IntClust labels of 1,075 example TCGA samples from 'test_data'.
 }
 \keyword{datasets}

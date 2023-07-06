@@ -14,6 +14,6 @@ A 1075 by 478 matrix
 test_data
 }
 \description{
-Example data from TCGA samples used to test the package pre-formatted for the CopyClust function.
+Example data from 1,075 TCGA samples used to test the package pre-formatted for the CopyClust function.
 }
 \keyword{datasets}

@@ -7,13 +7,13 @@
 \format{
 \subsection{\code{test_data_raw}}{
 
-A 6 by 211907 matrix
+A 20413 by 6 matrix
 }
 }
 \usage{
 test_data_raw
 }
 \description{
-Example data from TCGA samples used to test the package raw copy number values in DNACopy format
+Example data from 100 TCGA samples used to test the package raw copy number values in DNACopy format
 }
 \keyword{datasets}
