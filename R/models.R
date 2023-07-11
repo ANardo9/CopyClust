@@ -69,7 +69,7 @@ CopyClust = function(data_input, model_approach = "10C") {
 #'
 #' @param data_input A data frame representing the output of DNAcopy. Six columns: "ID", "chrom", "loc.start", "loc.end", "num.mark", "seg.mean"
 #' @param reference_genome Formats the genomic ranges to the appropriate reference genome. Valid inputs are "hg18", "hg19", and "hg38".
-#' @param probes Number of probes to utilize. Default is 100000. A greater number of probes decreases the speed.
+#' @param probes Number of probes to utilize. Default is 100,000. A greater number of probes decreases the speed.
 #' @returns A data frame with sample IDs as rows and 478 model features as columns that can be used with the CopyClust function.
 
 cc_format = function(data_input, reference_genome = "hg18", probes = 100000) {
