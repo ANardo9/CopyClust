@@ -12,6 +12,11 @@ utils::globalVariables(c("IntClust_Label"))
 #' @importFrom dplyr filter
 
 CopyClust = function(data_input, model_approach = "10C") {
+  #Add error for incorrect data format
+  if (dim(data_input)[2] != 478) {
+    stop("Incorrect data_input format. Ensure data_input contains 478 model features as columns and individual samples as rows.")
+  }
+
   if (model_approach == "10C") {
 
    prediction = as.data.frame(predict(CopyClust_10_Class_Scale_Function_v2, data_input)) + 1
@@ -80,7 +85,7 @@ CopyClust = function(data_input, model_approach = "10C") {
 #' @returns A data frame with sample IDs as rows and 478 model features as columns that can be used with the CopyClust function.
 #' @export
 
-cc_format = function(data_input, reference_genome = "hg18", probes = 100000) {
+CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
   #incorrect probes input
   if(!is.numeric(probes)){
     stop("Non-numeric entry to parameter 'probes'.")
@@ -102,8 +107,8 @@ cc_format = function(data_input, reference_genome = "hg18", probes = 100000) {
   }
   else {
   stop("Incorrect entry to parameter 'reference_genome'.")
-  }
-  }
+      }
+    }
   }
 }
 
