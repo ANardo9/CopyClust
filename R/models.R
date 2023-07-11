@@ -1,4 +1,6 @@
-utils::globalVariables(c("IntClust_Label"))
+#Global Variables
+utils::globalVariables(c("IntClust_Label", "IntClust_colors", "ID", "loc.end", "loc.start", "num.mark", "width"))
+IntClust_colors = c("#E94D03","#7CB772","#B93377","#6EB8BB","#782D24","#F3E855","#364085","#E4AA2B","#E696E1","#6E3387")
 
 #' CopyClust Model Prediction
 #'
@@ -80,10 +82,12 @@ CopyClust = function(data_input, model_approach = "10C") {
 #' Format Data for CopyClust Function
 #'
 #' @param data_input A data frame representing the output of DNAcopy. Six columns: "ID", "chrom", "loc.start", "loc.end", "num.mark", "seg.mean"
-#' @param reference_genome Formats the genomic ranges to the appropriate reference genome. Valid inputs are "hg18", "hg19", and "hg38".
+#' @param reference_genome Formats the genomic ranges to the appropriate reference genome. Valid inputs are "hg18", "hg19", and "hg38". Default is "hg18".
 #' @param probes Number of probes to utilize. Default is 100,000. A greater number of probes decreases the speed.
 #' @returns A data frame with sample IDs as rows and 478 model features as columns that can be used with the CopyClust function.
 #' @export
+#'
+#' @importFrom dplyr mutate
 
 CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
   #incorrect probes input
@@ -94,14 +98,79 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
   #hg18
   if(reference_genome == "hg18") {
     print("hg18 Reference Genome")
+
+    #Isolate samples IDs
+    sample_ids = as.character(levels(factor(data_input$ID)))
+
+    #Create matrix for feature values for all input samples
+    feature_values = matrix(nrow = length(sample_ids), ncol = 478)
+    rownames(feature_values) = sample_ids
+
+    #Expand data
+    id_index = 1
+    while(id_index <= 1
+         # length(sample_ids)
+          ) {
+
+      #Isolate single samples
+      data_subset = data_input %>%
+        mutate(width = loc.end - loc.start,
+               separation = width / num.mark) %>%
+        filter(ID == levels(factor(sample_ids))[id_index])
+      data_subset = as.matrix(data_subset)
+
+
+      #Create expanded data matrix for isolated sample
+      expanded_data = matrix(nrow = sum(as.numeric(data_subset[,5])), ncol = 5)
+      colnames(expanded_data) = c("ID", "Chrom", "Position", "Value", "Range")
+
+      expanded_data[,1] = as.character(rep(levels(factor(sample_ids))[id_index]), times = as.numeric(data_subset[,5]))
+      expanded_data[,2] = as.numeric(rep(data_subset[,2], times = as.numeric(data_subset[,5])))
+      expanded_data[,4] = as.numeric(rep(data_subset[,6], times = as.numeric(data_subset[,5])))
+
+      #Position Loop
+      position_output = numeric(length = sum(as.numeric(data_subset[,5])))
+      i = 1
+      k = 1
+      while (i <= dim(data_subset)[1]) {
+       j = 1
+       while (j <= as.numeric(data_subset[i,5])) {
+         position_output[k] = as.numeric(data_subset[i,3]) + as.numeric(data_subset[i,8]) * (j - 1)
+         j = j + 1
+         k = k + 1
+       }
+         i = i + 1
+       }
+
+       expanded_data[,3] = as.numeric(round(position_output))
+
+       return(expanded_data)
+
+       # #Which Range Loop
+       # range_output = numeric(length = sum(as.numeric(data_subset[,5])))
+       # i = 1
+       # while (i <= dim(data_subset)[1]) {
+       #   range_output[i] = hg18_ranges$range[max(which(hg18_ranges$start < as.numeric(expanded_data[i,3]) &
+       #                                                   hg18_ranges$chrom == as.numeric(expanded_data[i,2])))]
+       #   i = i + 1
+       # }
+
+
+
+    print(id_index)
+    id_index = id_index + 1
+    }
+
   }
   else{
 
+  #hg19
   if(reference_genome == "hg19") {
     print("hg19 Reference Genome")
   }
   else{
 
+  #hg38
   if(reference_genome == "hg38") {
     print("hg38 Reference Genome")
   }

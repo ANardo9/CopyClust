@@ -9,7 +9,7 @@ CC_format(data_input, reference_genome = "hg18", probes = 1e+05)
 \arguments{
 \item{data_input}{A data frame representing the output of DNAcopy. Six columns: "ID", "chrom", "loc.start", "loc.end", "num.mark", "seg.mean"}
 
-\item{reference_genome}{Formats the genomic ranges to the appropriate reference genome. Valid inputs are "hg18", "hg19", and "hg38".}
+\item{reference_genome}{Formats the genomic ranges to the appropriate reference genome. Valid inputs are "hg18", "hg19", and "hg38". Default is "hg18".}
 
 \item{probes}{Number of probes to utilize. Default is 100,000. A greater number of probes decreases the speed.}
 }

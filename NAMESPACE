@@ -3,5 +3,6 @@
 export(CC_format)
 export(CopyClust)
 importFrom(dplyr,filter)
+importFrom(dplyr,mutate)
 importFrom(stats,predict)
 importFrom(tidyr,"%>%")
