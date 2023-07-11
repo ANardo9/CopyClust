@@ -4,7 +4,7 @@
 \alias{CC_format}
 \title{Format Data for CopyClust Function}
 \usage{
-CC_format(data_input, reference_genome = "hg18", probes = 1e+05)
+CC_format(data_input, reference_genome = "hg18", probes = 100000)
 }
 \arguments{
 \item{data_input}{A data frame representing the output of DNAcopy. Six columns: "ID", "chrom", "loc.start", "loc.end", "num.mark", "seg.mean"}
@@ -17,5 +17,6 @@ CC_format(data_input, reference_genome = "hg18", probes = 1e+05)
 A data frame with sample IDs as rows and 478 model features as columns that can be used with the CopyClust function.
 }
 \description{
-Format Data for CopyClust Function
+Formats raw data in DNACopy format into 478 genomic range features required to run the CopyClust() function.
+Reference genome (hg18, h19, or hg38) must be specified.
 }
