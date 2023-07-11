@@ -8,7 +8,8 @@ Description: What the package does in paragraph form.
 License: MIT + file LICENSE
 URL: https://github.com/camyoung54/CopyClust
 Imports: 
-    tidyverse,
+    dplyr,
+    tidyr,
     knitr,
     xgboost
 Suggests:

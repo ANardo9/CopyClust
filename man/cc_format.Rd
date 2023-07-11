@@ -11,7 +11,7 @@ cc_format(data_input, reference_genome = "hg18", probes = 1e+05)
 
 \item{reference_genome}{Formats the genomic ranges to the appropriate reference genome. Valid inputs are "hg18", "hg19", and "hg38".}
 
-\item{probes}{Number of probes to utilize. Default is 100000. A greater number of probes decreases the speed.}
+\item{probes}{Number of probes to utilize. Default is 100,000. A greater number of probes decreases the speed.}
 }
 \value{
 A data frame with sample IDs as rows and 478 model features as columns that can be used with the CopyClust function.

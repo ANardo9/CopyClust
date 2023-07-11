@@ -1,8 +1,15 @@
+utils::globalVariables(c("IntClust_Label"))
+
 #' CopyClust Model Prediction
 #'
 #' @param data_input A data frame with sample IDs as rows and 478 model features as columns.
 #' @param model_approach If equal to "10C", implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification.
 #' @returns A numeric vector of predicted Integrative Cluster label according to model approach.
+#' @export
+#'
+#' @importFrom stats predict
+#' @importFrom tidyr %>%
+#' @importFrom dplyr filter
 
 CopyClust = function(data_input, model_approach = "10C") {
   if (model_approach == "10C") {
@@ -71,6 +78,7 @@ CopyClust = function(data_input, model_approach = "10C") {
 #' @param reference_genome Formats the genomic ranges to the appropriate reference genome. Valid inputs are "hg18", "hg19", and "hg38".
 #' @param probes Number of probes to utilize. Default is 100,000. A greater number of probes decreases the speed.
 #' @returns A data frame with sample IDs as rows and 478 model features as columns that can be used with the CopyClust function.
+#' @export
 
 cc_format = function(data_input, reference_genome = "hg18", probes = 100000) {
   #incorrect probes input
