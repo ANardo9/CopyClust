@@ -123,8 +123,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     rownames(feature_values) = sample_ids
 
     #Expand data
-    id_index = 1
-    while(id_index <= length(sample_ids)) {
+    for(id_index in 1:length(sample_ids)) {
 
       #Isolate single samples
       data_subset = data_input %>%
@@ -132,6 +131,9 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
                separation = width / num.mark) %>%
         filter(ID == levels(factor(sample_ids))[id_index])
       data_subset = as.matrix(data_subset)
+
+      #Identify probe locations for use
+      probe_locations = round(seq(from = 1, to = sum(as.numeric(data_subset[,5])), length.out = probes))
 
       #Create expanded data matrix for isolated sample
       expanded_data = matrix(nrow = sum(as.numeric(data_subset[,5])), ncol = 5)
@@ -142,29 +144,24 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
       expanded_data[,4] = as.numeric(rep(data_subset[,6], times = as.numeric(data_subset[,5])))
 
       #Position Loop
-      position_output = numeric(length = sum(as.numeric(data_subset[,5])))
-      i = 1
-      k = 1
-      while (i <= dim(data_subset)[1]) {
-        j = 1
-          while (j <= as.numeric(data_subset[i,5])) {
-            position_output[k] = as.numeric(data_subset[i,3]) + as.numeric(data_subset[i,8]) * (j - 1)
-            j = j + 1
-            k = k + 1
-          }
-        i = i + 1
+      position_output = NA
+      for (i in 1:dim(data_subset)[1]) {
+        position_output_seq = seq(from = as.numeric(data_subset[i,3]), to = as.numeric(data_subset[i,4]), length.out = as.numeric(data_subset[i,5]))
+        position_output = c(position_output, position_output_seq)
       }
+      position_output = position_output[-1]
 
        #Add position to expanded_data
-       expanded_data[,3] = as.numeric(round(position_output))
+       expanded_data[,3] = position_output
+
+       #Remove unused probes
+       expanded_data = expanded_data[probe_locations,]
 
        #Which Range Loop
-       range_output = numeric(length = sum(as.numeric(data_subset[,5])))
-       i = 1
-       while (i <= dim(expanded_data)[1]) {
+       range_output = numeric(length = dim(expanded_data)[1])
+       for (i in 1:dim(expanded_data)[1]) {
          range_output[i] = hg18_ranges$range[max(which(hg18_ranges$start < as.numeric(expanded_data[i,3]) &
                                                          hg18_ranges$chrom == as.numeric(expanded_data[i,2])))]
-         i = i + 1
        }
 
        #Add range to expanded_data
@@ -181,16 +178,12 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
          ungroup()
        expanded_data = expanded_data[!duplicated(expanded_data$Range),]
 
-        i = 1
-        while (i <= dim(expanded_data)[1]) {
+        for (i in 1:dim(expanded_data)[1]) {
           feature_values[as.numeric(id_index), as.numeric(expanded_data$Range[i])] = as.numeric(expanded_data$range_mean[i])
-          i = i + 1
         }
-
-        print(paste("Samples formatted: ", id_index, sep = ""))
-        id_index = id_index + 1
-    }
-    return(feature_values)
+         print(paste("Samples formatted: ", id_index, sep = ""))
+     }
+     return(feature_values)
   }
   else{
 
@@ -206,8 +199,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     rownames(feature_values) = sample_ids
 
     #Expand data
-    id_index = 1
-    while(id_index <= length(sample_ids)) {
+    for(id_index in 1:length(sample_ids)) {
 
       #Isolate single samples
       data_subset = data_input %>%
@@ -215,6 +207,9 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
                separation = width / num.mark) %>%
         filter(ID == levels(factor(sample_ids))[id_index])
       data_subset = as.matrix(data_subset)
+
+      #Identify probe locations for use
+      probe_locations = round(seq(from = 1, to = sum(as.numeric(data_subset[,5])), length.out = probes))
 
       #Create expanded data matrix for isolated sample
       expanded_data = matrix(nrow = sum(as.numeric(data_subset[,5])), ncol = 5)
@@ -225,29 +220,24 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
       expanded_data[,4] = as.numeric(rep(data_subset[,6], times = as.numeric(data_subset[,5])))
 
       #Position Loop
-      position_output = numeric(length = sum(as.numeric(data_subset[,5])))
-      i = 1
-      k = 1
-      while (i <= dim(data_subset)[1]) {
-        j = 1
-        while (j <= as.numeric(data_subset[i,5])) {
-          position_output[k] = as.numeric(data_subset[i,3]) + as.numeric(data_subset[i,8]) * (j - 1)
-          j = j + 1
-          k = k + 1
-        }
-        i = i + 1
+      position_output = NA
+      for (i in 1:dim(data_subset)[1]) {
+        position_output_seq = seq(from = as.numeric(data_subset[i,3]), to = as.numeric(data_subset[i,4]), length.out = as.numeric(data_subset[i,5]))
+        position_output = c(position_output, position_output_seq)
       }
+      position_output = position_output[-1]
 
       #Add position to expanded_data
-      expanded_data[,3] = as.numeric(round(position_output))
+      expanded_data[,3] = position_output
+
+      #Remove unused probes
+      expanded_data = expanded_data[probe_locations,]
 
       #Which Range Loop
-      range_output = numeric(length = sum(as.numeric(data_subset[,5])))
-      i = 1
-      while (i <= dim(expanded_data)[1]) {
+      range_output = numeric(length = dim(expanded_data)[1])
+      for (i in 1:dim(expanded_data)[1]) {
         range_output[i] = hg19_ranges$range[max(which(hg19_ranges$start < as.numeric(expanded_data[i,3]) &
                                                         hg19_ranges$chrom == as.numeric(expanded_data[i,2])))]
-        i = i + 1
       }
 
       #Add range to expanded_data
@@ -264,14 +254,10 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
         ungroup()
       expanded_data = expanded_data[!duplicated(expanded_data$Range),]
 
-      i = 1
-      while (i <= dim(expanded_data)[1]) {
+      for (i in 1:dim(expanded_data)[1]) {
         feature_values[as.numeric(id_index), as.numeric(expanded_data$Range[i])] = as.numeric(expanded_data$range_mean[i])
-        i = i + 1
       }
-
       print(paste("Samples formatted: ", id_index, sep = ""))
-      id_index = id_index + 1
     }
     return(feature_values)
   }
@@ -289,8 +275,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     rownames(feature_values) = sample_ids
 
     #Expand data
-    id_index = 1
-    while(id_index <= length(sample_ids)) {
+    for(id_index in 1:length(sample_ids)) {
 
       #Isolate single samples
       data_subset = data_input %>%
@@ -298,6 +283,9 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
                separation = width / num.mark) %>%
         filter(ID == levels(factor(sample_ids))[id_index])
       data_subset = as.matrix(data_subset)
+
+      #Identify probe locations for use
+      probe_locations = round(seq(from = 1, to = sum(as.numeric(data_subset[,5])), length.out = probes))
 
       #Create expanded data matrix for isolated sample
       expanded_data = matrix(nrow = sum(as.numeric(data_subset[,5])), ncol = 5)
@@ -308,29 +296,24 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
       expanded_data[,4] = as.numeric(rep(data_subset[,6], times = as.numeric(data_subset[,5])))
 
       #Position Loop
-      position_output = numeric(length = sum(as.numeric(data_subset[,5])))
-      i = 1
-      k = 1
-      while (i <= dim(data_subset)[1]) {
-        j = 1
-        while (j <= as.numeric(data_subset[i,5])) {
-          position_output[k] = as.numeric(data_subset[i,3]) + as.numeric(data_subset[i,8]) * (j - 1)
-          j = j + 1
-          k = k + 1
-        }
-        i = i + 1
+      position_output = NA
+      for (i in 1:dim(data_subset)[1]) {
+        position_output_seq = seq(from = as.numeric(data_subset[i,3]), to = as.numeric(data_subset[i,4]), length.out = as.numeric(data_subset[i,5]))
+        position_output = c(position_output, position_output_seq)
       }
+      position_output = position_output[-1]
 
       #Add position to expanded_data
-      expanded_data[,3] = as.numeric(round(position_output))
+      expanded_data[,3] = position_output
+
+      #Remove unused probes
+      expanded_data = expanded_data[probe_locations,]
 
       #Which Range Loop
-      range_output = numeric(length = sum(as.numeric(data_subset[,5])))
-      i = 1
-      while (i <= dim(expanded_data)[1]) {
+      range_output = numeric(length = dim(expanded_data)[1])
+      for (i in 1:dim(expanded_data)[1]) {
         range_output[i] = hg38_ranges$range[max(which(hg38_ranges$start < as.numeric(expanded_data[i,3]) &
                                                         hg38_ranges$chrom == as.numeric(expanded_data[i,2])))]
-        i = i + 1
       }
 
       #Add range to expanded_data
@@ -347,14 +330,10 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
         ungroup()
       expanded_data = expanded_data[!duplicated(expanded_data$Range),]
 
-      i = 1
-      while (i <= dim(expanded_data)[1]) {
+      for (i in 1:dim(expanded_data)[1]) {
         feature_values[as.numeric(id_index), as.numeric(expanded_data$Range[i])] = as.numeric(expanded_data$range_mean[i])
-        i = i + 1
       }
-
       print(paste("Samples formatted: ", id_index, sep = ""))
-      id_index = id_index + 1
     }
     return(feature_values)
   }
