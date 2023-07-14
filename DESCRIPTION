@@ -11,7 +11,7 @@ Imports:
     dplyr,
     tidyr,
     knitr,
-    xgboost
+    xgboost (>= 1.7.5)
 Suggests:
     ggplot2,
     iC10,

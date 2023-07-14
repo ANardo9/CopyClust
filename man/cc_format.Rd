@@ -4,7 +4,7 @@
 \alias{CC_format}
 \title{Format Data for CopyClust Function}
 \usage{
-CC_format(data_input, reference_genome = "hg18", probes = 100000)
+CC_format(data_input, reference_genome = "hg18", probes = 1e+05)
 }
 \arguments{
 \item{data_input}{A data frame representing the output of DNAcopy. Six columns: "ID", "chrom", "loc.start", "loc.end", "num.mark", "seg.mean"}

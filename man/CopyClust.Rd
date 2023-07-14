@@ -4,12 +4,12 @@
 \alias{CopyClust}
 \title{CopyClust Model Prediction}
 \usage{
-CopyClust(data_input, model_approach = "10C")
+CopyClust(data_input, model_approach = "6C")
 }
 \arguments{
 \item{data_input}{A data frame with sample IDs as rows and 478 model features as columns.}
 
-\item{model_approach}{Parameter for model approach. If equal to "10C", implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification.}
+\item{model_approach}{Parameter for model approach, default is "6C": 6-Class with Binary Reclassification. If equal to "10C", implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification.}
 }
 \value{
 A numeric vector of predicted Integrative Cluster label according to model approach.

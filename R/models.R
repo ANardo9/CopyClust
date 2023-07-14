@@ -9,7 +9,7 @@ IntClust_colors = c("#E94D03","#7CB772","#B93377","#6EB8BB","#782D24","#F3E855",
 #'Implements XGBoost models developed using METABRIC cohort for IntClust classification based on copy number data alone.
 #'
 #' @param data_input A data frame with sample IDs as rows and 478 model features as columns.
-#' @param model_approach Parameter for model approach. If equal to "10C", implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification.
+#' @param model_approach Parameter for model approach, default is "6C": 6-Class with Binary Reclassification. If equal to "10C", implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification.
 #' @returns A numeric vector of predicted Integrative Cluster label according to model approach.
 #' @export
 #'
@@ -18,21 +18,25 @@ IntClust_colors = c("#E94D03","#7CB772","#B93377","#6EB8BB","#782D24","#F3E855",
 #' @importFrom dplyr filter
 #' @importFrom dplyr group_by
 
-CopyClust = function(data_input, model_approach = "10C") {
+CopyClust = function(data_input, model_approach = "6C") {
   #Add error for incorrect data format
   if (dim(data_input)[2] != 478) {
     stop("Incorrect data_input format. Ensure data_input contains 478 model features as columns and individual samples as rows.")
   }
 
+  #10-Class Model
   if (model_approach == "10C") {
-
+   data_input = scale(data_input)
    prediction = as.data.frame(predict(CopyClust_10_Class_Scale_Function_v2, data_input)) + 1
    rownames(prediction) = rownames(data_input)
    colnames(prediction) = "IntClust_Label"
 
    return(prediction)
   }
+
+  #6-Class Model with Binary Reclassification
   if (model_approach == "6C") {
+    data_input = scale(data_input)
     prediction = factor(predict(CopyClust_6_Class_Scale_Function_v2, data_input))
     levels(prediction) = c("1/5", "2", "3/8", "4/7", "6", "9/10")
     prediction = as.data.frame(prediction)
