@@ -30,7 +30,7 @@ CopyClust = function(data_input, model_approach = "6C") {
   #10-Class Model
   if (model_approach == "10C") {
    data_input = scale(data_input)
-   prediction = as.data.frame(predict(CopyClust_10_Class_Scale_Function_v2, data_input)) + 1
+   prediction = as.data.frame(predict(CopyClust_10_Class_Scale_Function_v2, data_input) + 1)
    rownames(prediction) = rownames(data_input)
    colnames(prediction) = "IntClust_Label"
 
@@ -339,8 +339,8 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
       #Which Range Loop
       range_output = numeric(length = dim(expanded_data)[1])
       for (i in 1:dim(expanded_data)[1]) {
-        range_output[i] = hg38_ranges$range[max(which(hg38_ranges$start < as.numeric(expanded_data[i,3]) &
-                                                        hg38_ranges$chrom == as.numeric(expanded_data[i,2])))]
+        range_output[i] = suppressWarnings(hg38_ranges$range[max(which(hg38_ranges$start < as.numeric(expanded_data[i,3]) &
+                                                        hg38_ranges$chrom == as.numeric(expanded_data[i,2])))])
       }
 
       #Add range to expanded_data
