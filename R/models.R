@@ -3,15 +3,19 @@ utils::globalVariables(c("IntClust_Label", "IntClust_colors", "ID", "loc.end", "
                          "hg18_ranges", "hg19_ranges", "hg38_ranges", "Range", "Value"))
 IntClust_colors = c("#E94D03","#7CB772","#B93377","#6EB8BB","#782D24","#F3E855","#364085","#E4AA2B","#E696E1","#6E3387")
 
-#' CopyClust Model Prediction
+#' CopyClust model integrative cluster prediction for breast cancer tumors
 #'
 #'@description
-#'Implements an XGBoost-based classifier trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number data alone. Integrative cluster prediction can be made using either a 10-class model approach
-#'or 6-class with binary reclassification model approach. Scaling of features occurs prior to classification, therefore, accuracy may be impaired by data sets with small sample size.
+#' `CopyClust()` implements an XGBoost-based classifier trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number data alone. Integrative cluster prediction can be made using either a 10-class model approach
+#' or 6-class with binary reclassification model approach. Scaling of features occurs prior to classification, therefore, accuracy may be impaired by data sets with small sample size.
 #'
-#' @param data_input A data frame with sample IDs as rows and the 478 un-scaled model features as columns. Can be the output from CC_format()
-#' @param model_approach Parameter for model approach. If equal to "10C", will implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification. Default is "6C", the 6-class with binary reclassification approach.
-#' @returns A named numeric vector of predicted integrative cluster label according to selected model approach with sample ID as row name.
+#' @param data_input A data frame with sample IDs as rows and the 478 un-scaled model features as columns. Can be the output from [CC_format()].
+#' @param model_approach Parameter for model approach. If equal to `10C`, will implement 10-class model approach. If equal to `6C`, will implement 6-class model approach with binary reclassification. Default is `6C`, the 6-class with binary reclassification approach.
+#' @returns A named numeric vector of predicted integrative cluster label the same length of number of samples provided with sample ID as row name.
+#' @seealso [CC_format()] for a convenient way of formatting copy number data from `DNACopy` format into a structure usable by [CopyClust()].
+#' @author Cameron C. Young
+#'
+#'
 #' @export
 #'
 #' @importFrom stats predict
@@ -19,6 +23,7 @@ IntClust_colors = c("#E94D03","#7CB772","#B93377","#6EB8BB","#782D24","#F3E855",
 #' @importFrom dplyr filter
 #' @importFrom dplyr group_by
 #' @importFrom xgboost xgb.load.raw
+#'
 
 CopyClust = function(data_input, model_approach = "6C") {
   data_input = as.matrix(data_input)
@@ -116,16 +121,19 @@ CopyClust = function(data_input, model_approach = "6C") {
   }
 }
 
-#' Format Data for CopyClust Function
+#' Format data for use by CopyClust function
 #'
 #' @description
-#' Formats raw data from DNACopy format into 478 genomic range features required to run the CopyClust() function.
-#' Reference genome (hg18, h19, or hg38) must be specified.
+#' Formats raw data from DNACopy format into 478 genomic range features required to run the [CopyClust()].
+#' Reference genome (`hg18`, `h19`, or `hg38`) must be specified with the `reference_genome` parameter.
 #'
-#' @param data_input A data frame representing the output of DNAcopy. Six columns: "ID", "chrom", "loc.start", "loc.end", "num.mark", "seg.mean"
-#' @param reference_genome Parameter for reference genome. Formats the genomic ranges to the appropriate reference genome. Valid inputs are "hg18", "hg19", and "hg38". Default is "hg18".
-#' @param probes Parameter for number of probes to utilize. Specified number of probes will be used to calculate values for model features. Specified number of probes will be selected from all available probes equally spaced across the genome. Default is 100,000 probes. A greater number of probes decreases the processing speed.
-#' @returns A data frame with sample IDs as rows and 478 model features as columns that can be used with the CopyClust function.
+#' @param data_input A data frame generated from the output of [DNAcopy](https://bioconductor.org/packages/release/bioc/html/DNAcopy.html). The data frame must contain six columns with the following column names: `ID`, `chrom`, `loc.start`, `loc.end`, `num.mark`, and `seg.mean`.
+#' @param reference_genome Parameter for reference genome. Formats the genomic ranges used as features for [CopyClust()] to the appropriate reference genome. Valid inputs are `hg18`, `hg19`, and `hg38`. Default is `hg18`.
+#' @param probes Parameter for number of probes to use to calculate feature values. Specified number of probes will be used to calculate values for model features selected from all available probes equally spaced across the genome. Default is `100000` probes. A greater number of probes decreases the processing speed. Providing a values greater than the number of available probes will results in a error.
+#' @returns A data frame with sample IDs as rows and 478 model features as columns that can be used with the [CopyClust()] function.
+#' @seealso [CopyClust()], [DNAcopy](https://bioconductor.org/packages/release/bioc/html/DNAcopy.html)
+#' @author Cameron C. Young
+#'
 #' @export
 #'
 #' @importFrom dplyr mutate
@@ -163,6 +171,9 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
       data_subset = as.matrix(data_subset)
 
       #Identify probe locations for use
+      if(probes > sum(as.numeric(data_subset[,5]))) {
+        stop(paste("Value of `probes` greater than number of available probes: ", sum(as.numeric(data_subset[,5])), sep = ""))
+      }
       probe_locations = round(seq(from = 1, to = sum(as.numeric(data_subset[,5])), length.out = probes))
 
       #Create expanded data matrix for isolated sample
@@ -241,6 +252,9 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
       data_subset = as.matrix(data_subset)
 
       #Identify probe locations for use
+      if(probes > sum(as.numeric(data_subset[,5]))) {
+        stop(paste("Value of `probes` greater than number of available probes: ", sum(as.numeric(data_subset[,5])), sep = ""))
+      }
       probe_locations = round(seq(from = 1, to = sum(as.numeric(data_subset[,5])), length.out = probes))
 
       #Create expanded data matrix for isolated sample
@@ -319,6 +333,9 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
       data_subset = as.matrix(data_subset)
 
       #Identify probe locations for use
+      if(probes > sum(as.numeric(data_subset[,5]))) {
+        stop(paste("Value of `probes` greater than number of available probes: ", sum(as.numeric(data_subset[,5])), sep = ""))
+      }
       probe_locations = round(seq(from = 1, to = sum(as.numeric(data_subset[,5])), length.out = probes))
 
       #Create expanded data matrix for isolated sample

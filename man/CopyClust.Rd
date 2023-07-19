@@ -2,19 +2,25 @@
 % Please edit documentation in R/models.R
 \name{CopyClust}
 \alias{CopyClust}
-\title{CopyClust Model Prediction}
+\title{CopyClust model integrative cluster prediction for breast cancer tumors}
 \usage{
 CopyClust(data_input, model_approach = "6C")
 }
 \arguments{
-\item{data_input}{A data frame with sample IDs as rows and the 478 un-scaled model features as columns. Can be the output from CC_format()}
+\item{data_input}{A data frame with sample IDs as rows and the 478 un-scaled model features as columns. Can be the output from \code{\link[=CC_format]{CC_format()}}.}
 
-\item{model_approach}{Parameter for model approach. If equal to "10C", will implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification. Default is "6C", the 6-class with binary reclassification approach.}
+\item{model_approach}{Parameter for model approach. If equal to \verb{10C}, will implement 10-class model approach. If equal to \verb{6C}, will implement 6-class model approach with binary reclassification. Default is \verb{6C}, the 6-class with binary reclassification approach.}
 }
 \value{
-A named numeric vector of predicted integrative cluster label according to selected model approach with sample ID as row name.
+A named numeric vector of predicted integrative cluster label the same length of number of samples provided with sample ID as row name.
 }
 \description{
-Implements an XGBoost-based classifier trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number data alone. Integrative cluster prediction can be made using either a 10-class model approach
+\code{CopyClust()} implements an XGBoost-based classifier trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number data alone. Integrative cluster prediction can be made using either a 10-class model approach
 or 6-class with binary reclassification model approach. Scaling of features occurs prior to classification, therefore, accuracy may be impaired by data sets with small sample size.
+}
+\seealso{
+\code{\link[=CC_format]{CC_format()}} for a convenient way of formatting copy number data from \code{DNACopy} format into a structure usable by \code{\link[=CopyClust]{CopyClust()}}.
+}
+\author{
+Cameron C. Young
 }
