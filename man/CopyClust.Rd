@@ -7,13 +7,14 @@
 CopyClust(data_input, model_approach = "6C")
 }
 \arguments{
-\item{data_input}{A data frame with sample IDs as rows and 478 model features as columns.}
+\item{data_input}{A data frame with sample IDs as rows and the 478 un-scaled model features as columns. Can be the output from CC_format()}
 
-\item{model_approach}{Parameter for model approach, default is "6C": 6-Class with Binary Reclassification. If equal to "10C", implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification.}
+\item{model_approach}{Parameter for model approach. If equal to "10C", will implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification. Default is "6C", the 6-class with binary reclassification approach.}
 }
 \value{
-A numeric vector of predicted Integrative Cluster label according to model approach.
+A named numeric vector of predicted integrative cluster label according to selected model approach with sample ID as row name.
 }
 \description{
-Implements XGBoost models developed using METABRIC cohort for IntClust classification based on copy number data alone.
+Implements an XGBoost-based classifier trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number data alone. Integrative cluster prediction can be made using either a 10-class model approach
+or 6-class with binary reclassification model approach. Scaling of features occurs prior to classification, therefore, accuracy may be impaired by data sets with small sample size.
 }

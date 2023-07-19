@@ -1,10 +1,10 @@
 Package: CopyClust
 Title: A Copy-Number-Based Integrative Cluster Classification Scheme
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: c(
     person("Cameron", "Young", email = "cameron.young@cruk.cam.ac.uk", role = c("cre", "aut"), comment = c(ORCID = "0000-0001-7323-4834")),
     person("Oscar", "Rueda", email = "oscar.rueda@mrc-bsu.cam.ac.uk", role = "aut"))
-Description: What the package does in paragraph form. 
+Description: This package serves as an alternative to the iC10 package developed by Rueda et al. for the classification of breast cancer samples into integrative clusters when gene expression data is unavailable. CopyClust implements XGBoost machine learning models trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number alone. 
 License: MIT + file LICENSE
 URL: https://github.com/camyoung54/CopyClust
 Imports: 

@@ -14,6 +14,6 @@ A 20413 by 6 matrix
 test_data_raw
 }
 \description{
-Example data from 100 TCGA samples used to test the package raw copy number values in DNACopy format
+Example raw copy number values in DNACopy format from 100 TCGA samples used to test the CC_format function.
 }
 \keyword{datasets}

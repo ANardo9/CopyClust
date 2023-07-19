@@ -6,11 +6,12 @@ IntClust_colors = c("#E94D03","#7CB772","#B93377","#6EB8BB","#782D24","#F3E855",
 #' CopyClust Model Prediction
 #'
 #'@description
-#'Implements XGBoost models developed using METABRIC cohort for IntClust classification based on copy number data alone.
+#'Implements an XGBoost-based classifier trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number data alone. Integrative cluster prediction can be made using either a 10-class model approach
+#'or 6-class with binary reclassification model approach. Scaling of features occurs prior to classification, therefore, accuracy may be impaired by data sets with small sample size.
 #'
-#' @param data_input A data frame with sample IDs as rows and 478 model features as columns.
-#' @param model_approach Parameter for model approach, default is "6C": 6-Class with Binary Reclassification. If equal to "10C", implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification.
-#' @returns A numeric vector of predicted Integrative Cluster label according to model approach.
+#' @param data_input A data frame with sample IDs as rows and the 478 un-scaled model features as columns. Can be the output from CC_format()
+#' @param model_approach Parameter for model approach. If equal to "10C", will implement 10-class model approach. If equal to "6C", will implement 6-class model approach with binary reclassification. Default is "6C", the 6-class with binary reclassification approach.
+#' @returns A named numeric vector of predicted integrative cluster label according to selected model approach with sample ID as row name.
 #' @export
 #'
 #' @importFrom stats predict
@@ -19,9 +20,11 @@ IntClust_colors = c("#E94D03","#7CB772","#B93377","#6EB8BB","#782D24","#F3E855",
 #' @importFrom dplyr group_by
 
 CopyClust = function(data_input, model_approach = "6C") {
+  data_input = as.matrix(data_input)
+
   #Add error for incorrect data format
   if (dim(data_input)[2] != 478) {
-    stop("Incorrect data_input format. Ensure data_input contains 478 model features as columns and individual samples as rows.")
+    stop("Incorrect data_input format. Ensure data_input contains the 478 model features as columns and individual samples as rows.")
   }
 
   #10-Class Model
@@ -51,10 +54,28 @@ CopyClust = function(data_input, model_approach = "6C") {
     other_samples = prediction %>% filter(IntClust_Label == "2" | IntClust_Label == "6")
 
     #Filter Binary Data
-    data_15 = data_input[which(rownames(data_input) %in% rownames(samples_15)),]
-    data_38 = data_input[which(rownames(data_input) %in% rownames(samples_38)),]
-    data_47 = data_input[which(rownames(data_input) %in% rownames(samples_47)),]
-    data_910 = data_input[which(rownames(data_input) %in% rownames(samples_910)),]
+    data_15 = as.matrix(data_input[which(rownames(data_input) %in% rownames(samples_15)),])
+    if(dim(data_15)[1] == 478 & dim(data_15)[2] == 1) {
+      data_15 = t(data_15)
+      rownames(data_15) = rownames(samples_15)
+    }
+
+    data_38 = as.matrix(data_input[which(rownames(data_input) %in% rownames(samples_38)),])
+    if(dim(data_38)[1] == 478 & dim(data_38)[2] == 1) {
+      data_38 = t(data_38)
+      rownames(data_38) = rownames(samples_38)
+    }
+
+    data_47 = as.matrix(data_input[which(rownames(data_input) %in% rownames(samples_47)),])
+    if(dim(data_47)[1] == 478 & dim(data_47)[2] == 1) {
+      data_47 = t(data_47)
+      rownames(data_47) = rownames(samples_47)
+    }
+    data_910 = as.matrix(data_input[which(rownames(data_input) %in% rownames(samples_910)),])
+    if(dim(data_910)[1] == 478 & dim(data_910)[2] == 1) {
+      data_910 = t(data_910)
+      rownames(data_910) = rownames(samples_910)
+    }
 
     #Implement Binary Models
     samples_15_prediction = predict(CopyClust_15_Binary_Scale_Function_v2, data_15)
@@ -84,19 +105,19 @@ CopyClust = function(data_input, model_approach = "6C") {
     return(prediction)
   }
   else {
-    stop("Incorrect input to 'model_approach' parameter.")
+    stop("Incorrect input to 'model_approach' parameter. Must be equal to '6C' for 6-class with binary reclassification approach or '10C' for 10-class approach.")
   }
 }
 
 #' Format Data for CopyClust Function
 #'
 #' @description
-#' Formats raw data in DNACopy format into 478 genomic range features required to run the CopyClust() function.
+#' Formats raw data from DNACopy format into 478 genomic range features required to run the CopyClust() function.
 #' Reference genome (hg18, h19, or hg38) must be specified.
 #'
 #' @param data_input A data frame representing the output of DNAcopy. Six columns: "ID", "chrom", "loc.start", "loc.end", "num.mark", "seg.mean"
-#' @param reference_genome Formats the genomic ranges to the appropriate reference genome. Valid inputs are "hg18", "hg19", and "hg38". Default is "hg18".
-#' @param probes Number of probes to utilize. Default is 100,000. A greater number of probes decreases the speed.
+#' @param reference_genome Parameter for reference genome. Formats the genomic ranges to the appropriate reference genome. Valid inputs are "hg18", "hg19", and "hg38". Default is "hg18".
+#' @param probes Parameter for number of probes to utilize. Specified number of probes will be used to calculate values for model features. Specified number of probes will be selected from all available probes equally spaced across the genome. Default is 100,000 probes. A greater number of probes decreases the processing speed.
 #' @returns A data frame with sample IDs as rows and 478 model features as columns that can be used with the CopyClust function.
 #' @export
 #'
@@ -121,6 +142,8 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     #Create matrix for feature values for all input samples
     feature_values = matrix(nrow = length(sample_ids), ncol = 478)
     rownames(feature_values) = sample_ids
+
+    print(paste("Number of Samples: ", as.numeric(length(sample_ids)), sep = ""))
 
     #Expand data
     for(id_index in 1:length(sample_ids)) {
@@ -183,7 +206,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
         }
          print(paste("Samples formatted: ", id_index, sep = ""))
      }
-     return(feature_values)
+    return(feature_values)
   }
   else{
 
@@ -197,6 +220,8 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     #Create matrix for feature values for all input samples
     feature_values = matrix(nrow = length(sample_ids), ncol = 478)
     rownames(feature_values) = sample_ids
+
+    print(paste("Number of Samples: ", as.numeric(length(sample_ids)), sep = ""))
 
     #Expand data
     for(id_index in 1:length(sample_ids)) {
@@ -273,6 +298,8 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     #Create matrix for feature values for all input samples
     feature_values = matrix(nrow = length(sample_ids), ncol = 478)
     rownames(feature_values) = sample_ids
+
+    print(paste("Number of Samples: ", as.numeric(length(sample_ids)), sep = ""))
 
     #Expand data
     for(id_index in 1:length(sample_ids)) {

@@ -3,7 +3,7 @@
 \docType{data}
 \name{test_labels}
 \alias{test_labels}
-\title{CopyClust Example TCGA IntClust Labels}
+\title{CopyClust Example TCGA Integrative Cluster Labels}
 \format{
 \subsection{\code{test_labels}}{
 
@@ -14,6 +14,6 @@ A 1075 by 2 matrix
 test_labels
 }
 \description{
-Gold standard IntClust labels of 1,075 example TCGA samples from 'test_data'.
+Gold standard integrative cluster labels of 1,075 example TCGA samples from 'test_data' determined using combined copy number and gene expression classifier from iC10 package.
 }
 \keyword{datasets}

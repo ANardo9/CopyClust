@@ -4,7 +4,7 @@ A Copy-Number-Based Integrative Cluster Classification Scheme for Breast Cancer 
 
 ## Installation
 
-The package can be installed in R:
+The CopyClust package can be installed in R:
 
 ```r
  devtools::install_github("camyoung54/CopyClust")
@@ -12,7 +12,7 @@ The package can be installed in R:
     
 ## Documentation
 
-This package serves as an alternative to the [iC10 package]() developed by Rueda et al. for the classification of breast cancer samples into integrative clusters when gene expression data is unavailable. The iC10 package can be downloaded from CRAN:
+This package serves as an alternative to the [iC10 package]() developed by Rueda et al. for the classification of breast cancer samples into integrative clusters when gene expression data is unavailable. CopyClust implements an XGBoost-based classifier trained on the copy number profiles of the [METABRIC cohort](https://www.nature.com/articles/nature10983) to predict integrative cluster label based on copy number data alone. The iC10 package can be downloaded from CRAN:
 
 ```R
 install.packages("iC10")

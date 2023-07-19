@@ -14,7 +14,7 @@ A 478 by 5 matrix
 hg38_ranges
 }
 \description{
-Genomic ranges used as features for the CopyClust function linked to the hg38 reference genome.
+Genomic ranges used as features for the CopyClust function linked to the hg38 reference genome. Utilized for formatting with CC_format.
 Columns: "chrom", "start", "end", "width", "range".
 }
 \keyword{datasets}
