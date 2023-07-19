@@ -18,6 +18,7 @@ IntClust_colors = c("#E94D03","#7CB772","#B93377","#6EB8BB","#782D24","#F3E855",
 #' @importFrom tidyr %>%
 #' @importFrom dplyr filter
 #' @importFrom dplyr group_by
+#' @importFrom xgboost xgb.load.raw
 
 CopyClust = function(data_input, model_approach = "6C") {
   data_input = as.matrix(data_input)
@@ -30,7 +31,8 @@ CopyClust = function(data_input, model_approach = "6C") {
   #10-Class Model
   if (model_approach == "10C") {
    data_input = scale(data_input)
-   prediction = as.data.frame(predict(CopyClust_10_Class_Scale_Function_v2, data_input) + 1)
+   CopyClust_10_Class_Scale_model = xgb.load.raw(CopyClust_10_Class_Scale_model)
+   prediction = as.data.frame(predict(CopyClust_10_Class_Scale_model, data_input) + 1)
    rownames(prediction) = rownames(data_input)
    colnames(prediction) = "IntClust_Label"
 
@@ -40,7 +42,8 @@ CopyClust = function(data_input, model_approach = "6C") {
   #6-Class Model with Binary Reclassification
   if (model_approach == "6C") {
     data_input = scale(data_input)
-    prediction = factor(predict(CopyClust_6_Class_Scale_Function_v2, data_input))
+    CopyClust_6_Class_Scale_model = xgb.load.raw(CopyClust_6_Class_Scale_model)
+    prediction = factor(predict(CopyClust_6_Class_Scale_model, data_input))
     levels(prediction) = c("1/5", "2", "3/8", "4/7", "6", "9/10")
     prediction = as.data.frame(prediction)
     colnames(prediction) = "IntClust_Label"
@@ -78,22 +81,26 @@ CopyClust = function(data_input, model_approach = "6C") {
     }
 
     #Implement Binary Models
-    samples_15_prediction = predict(CopyClust_15_Binary_Scale_Function_v2, data_15)
+    CopyClust_15_Binary_model = xgb.load.raw(CopyClust_15_Binary_model)
+    samples_15_prediction = predict(CopyClust_15_Binary_model, data_15)
     samples_15_prediction = as.data.frame(ifelse(samples_15_prediction < 0.5, 1, 5))
     colnames(samples_15_prediction) = "IntClust_Label"
     rownames(samples_15_prediction) = rownames(data_15)
 
-    samples_38_prediction = predict(CopyClust_38_Binary_Scale_Function_v2, data_38)
+    CopyClust_38_Binary_model = xgb.load.raw(CopyClust_38_Binary_model)
+    samples_38_prediction = predict(CopyClust_38_Binary_model, data_38)
     samples_38_prediction = as.data.frame(ifelse(samples_38_prediction < 0.5, 3, 8))
     colnames(samples_38_prediction) = "IntClust_Label"
     rownames(samples_38_prediction) = rownames(data_38)
 
-    samples_47_prediction = predict(CopyClust_47_Binary_Scale_Function_v2, data_47)
+    CopyClust_47_Binary_model = xgb.load.raw(CopyClust_47_Binary_model)
+    samples_47_prediction = predict(CopyClust_47_Binary_model, data_47)
     samples_47_prediction = as.data.frame(ifelse(samples_47_prediction < 0.5, 4, 7))
     colnames(samples_47_prediction) = "IntClust_Label"
     rownames(samples_47_prediction) = rownames(data_47)
 
-    samples_910_prediction = predict(CopyClust_910_Binary_Scale_Function_v2, data_910)
+    CopyClust_910_Binary_model = xgb.load.raw(CopyClust_910_Binary_model)
+    samples_910_prediction = predict(CopyClust_910_Binary_model, data_910)
     samples_910_prediction = as.data.frame(ifelse(samples_910_prediction < 0.5, 9, 10))
     colnames(samples_910_prediction) = "IntClust_Label"
     rownames(samples_910_prediction) = rownames(data_910)
@@ -143,7 +150,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     feature_values = matrix(nrow = length(sample_ids), ncol = 478)
     rownames(feature_values) = sample_ids
 
-    print(paste("Number of Samples: ", as.numeric(length(sample_ids)), sep = ""))
+    print(paste("Number of samples to format: ", as.numeric(length(sample_ids)), sep = ""))
 
     #Expand data
     for(id_index in 1:length(sample_ids)) {
@@ -221,7 +228,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     feature_values = matrix(nrow = length(sample_ids), ncol = 478)
     rownames(feature_values) = sample_ids
 
-    print(paste("Number of Samples: ", as.numeric(length(sample_ids)), sep = ""))
+    print(paste("Number of samples to format: ", as.numeric(length(sample_ids)), sep = ""))
 
     #Expand data
     for(id_index in 1:length(sample_ids)) {
@@ -299,7 +306,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     feature_values = matrix(nrow = length(sample_ids), ncol = 478)
     rownames(feature_values) = sample_ids
 
-    print(paste("Number of Samples: ", as.numeric(length(sample_ids)), sep = ""))
+    print(paste("Number of samples to format: ", as.numeric(length(sample_ids)), sep = ""))
 
     #Expand data
     for(id_index in 1:length(sample_ids)) {
