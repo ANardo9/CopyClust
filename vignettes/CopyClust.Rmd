@@ -17,3 +17,5 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(CopyClust)
 ```
+
+The CopyClust package implements an XGBoost-based classifier trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number data alone. This package serves as an alternative to the iC10 package developed by Rueda et al. for the classification of breast cancer samples into integrative clusters when gene expression data is unavailable. 
