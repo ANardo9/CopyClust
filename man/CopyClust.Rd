@@ -18,6 +18,11 @@ A named numeric vector of predicted integrative cluster label the same length of
 \code{CopyClust()} implements an XGBoost-based classifier trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number data alone. Integrative cluster prediction can be made using either a 10-class model approach
 or 6-class with binary reclassification model approach. Scaling of features occurs prior to classification, therefore, accuracy may be impaired by data sets with small sample size.
 }
+\examples{
+data("test_data")
+results = CopyClust(test_data, model_approach = "6C")
+
+}
 \seealso{
 \code{\link[=CC_format]{CC_format()}} for a convenient way of formatting copy number data from \code{DNACopy} format into a structure usable by \code{\link[=CopyClust]{CopyClust()}}.
 }

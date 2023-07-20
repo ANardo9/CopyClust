@@ -20,6 +20,11 @@ A data frame with sample IDs as rows and 478 model features as columns that can 
 Formats raw data from DNACopy format into 478 genomic range features required to run the \code{\link[=CopyClust]{CopyClust()}}.
 Reference genome (\code{hg18}, \code{h19}, or \code{hg38}) must be specified with the \code{reference_genome} parameter.
 }
+\examples{
+data("test_data_raw")
+data_for_CopyClust = CC_format(test_data_raw, reference_genome = "hg19", probes = 100000)
+
+}
 \seealso{
 \code{\link[=CopyClust]{CopyClust()}}, \href{https://bioconductor.org/packages/release/bioc/html/DNAcopy.html}{DNAcopy}
 }

@@ -14,7 +14,9 @@ IntClust_colors = c("#E94D03","#7CB772","#B93377","#6EB8BB","#782D24","#F3E855",
 #' @returns A named numeric vector of predicted integrative cluster label the same length of number of samples provided with sample ID as row name.
 #' @seealso [CC_format()] for a convenient way of formatting copy number data from `DNACopy` format into a structure usable by [CopyClust()].
 #' @author Cameron C. Young
-#'
+#' @examples
+#' data("test_data")
+#' results = CopyClust(test_data, model_approach = "6C")
 #'
 #' @export
 #'
@@ -133,6 +135,9 @@ CopyClust = function(data_input, model_approach = "6C") {
 #' @returns A data frame with sample IDs as rows and 478 model features as columns that can be used with the [CopyClust()] function.
 #' @seealso [CopyClust()], [DNAcopy](https://bioconductor.org/packages/release/bioc/html/DNAcopy.html)
 #' @author Cameron C. Young
+#' @examples
+#' data("test_data_raw")
+#' data_for_CopyClust = CC_format(test_data_raw, reference_genome = "hg19", probes = 100000)
 #'
 #' @export
 #'
