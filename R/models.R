@@ -154,7 +154,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
 
   #hg18
   if(reference_genome == "hg18") {
-    print("hg18 Reference Genome")
+    message("hg18 Reference Genome")
 
     #Isolate samples IDs
     sample_ids = as.character(levels(factor(data_input$ID)))
@@ -163,7 +163,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     feature_values = matrix(nrow = length(sample_ids), ncol = 478)
     rownames(feature_values) = sample_ids
 
-    print(paste("Number of samples to format: ", as.numeric(length(sample_ids)), sep = ""))
+    message(paste("Number of samples to format: ", as.numeric(length(sample_ids)), sep = ""))
 
     #Expand data
     for(id_index in 1:length(sample_ids)) {
@@ -227,7 +227,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
         for (i in 1:dim(expanded_data)[1]) {
           feature_values[as.numeric(id_index), as.numeric(expanded_data$Range[i])] = as.numeric(expanded_data$range_mean[i])
         }
-         print(paste("Samples formatted: ", id_index, sep = ""))
+         message(paste("Samples formatted: ", id_index, sep = ""))
      }
     return(feature_values)
   }
@@ -235,7 +235,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
 
   #hg19
   if(reference_genome == "hg19") {
-    print("hg19 Reference Genome")
+    message("hg19 Reference Genome")
 
     #Isolate samples IDs
     sample_ids = as.character(levels(factor(data_input$ID)))
@@ -244,7 +244,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     feature_values = matrix(nrow = length(sample_ids), ncol = 478)
     rownames(feature_values) = sample_ids
 
-    print(paste("Number of samples to format: ", as.numeric(length(sample_ids)), sep = ""))
+    message(paste("Number of samples to format: ", as.numeric(length(sample_ids)), sep = ""))
 
     #Expand data
     for(id_index in 1:length(sample_ids)) {
@@ -308,7 +308,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
       for (i in 1:dim(expanded_data)[1]) {
         feature_values[as.numeric(id_index), as.numeric(expanded_data$Range[i])] = as.numeric(expanded_data$range_mean[i])
       }
-      print(paste("Samples formatted: ", id_index, sep = ""))
+      message(paste("Samples formatted: ", id_index, sep = ""))
     }
     return(feature_values)
   }
@@ -316,7 +316,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
 
   #hg38
   if(reference_genome == "hg38") {
-    print("hg38 Reference Genome")
+    message("hg38 Reference Genome")
 
     #Isolate samples IDs
     sample_ids = as.character(levels(factor(data_input$ID)))
@@ -325,7 +325,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
     feature_values = matrix(nrow = length(sample_ids), ncol = 478)
     rownames(feature_values) = sample_ids
 
-    print(paste("Number of samples to format: ", as.numeric(length(sample_ids)), sep = ""))
+    message(paste("Number of samples to format: ", as.numeric(length(sample_ids)), sep = ""))
 
     #Expand data
     for(id_index in 1:length(sample_ids)) {
@@ -389,7 +389,7 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
       for (i in 1:dim(expanded_data)[1]) {
         feature_values[as.numeric(id_index), as.numeric(expanded_data$Range[i])] = as.numeric(expanded_data$range_mean[i])
       }
-      print(paste("Samples formatted: ", id_index, sep = ""))
+      message(paste("Samples formatted: ", id_index, sep = ""))
     }
     return(feature_values)
   }
