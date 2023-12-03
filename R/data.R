@@ -49,4 +49,13 @@
 #' A 478 by 5 matrix
 "hg38_ranges"
 
+#' Raw METABRIC Copynumber Data
+#'
+#' Raw METABRIC copynumber calls
+#' Columns: "ID", "chrom", "loc.start", "loc.end", "num.mark", "seg.mean", "call", "call2".
+#'
+#' @format ## `raw_METABRIC_copynumber_data`
+#' A 1909741 by 8 matrix
+"raw_METABRIC_copynumber_data"
+
 
