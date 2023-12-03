@@ -58,4 +58,22 @@
 #' A 1909741 by 8 matrix
 "raw_METABRIC_copynumber_data"
 
+#' Raw TCGA SNP Copynumber Data
+#'
+#' Raw TCGA SNP copynumber calls
+#' Columns: "GDC_Aliquot", "Chromosome", "Start", "End", "Num_Probes", "Segment_Mean".
+#'
+#' @format ## `raw_TCGA_SNP_copynumber_data`
+#' A 794622 by 6 matrix
+"raw_TCGA_SNP_copynumber_data"
+
+#' Raw TCGA WES Copynumber Data
+#'
+#' Raw TCGA WES copynumber calls
+#' Columns: "ID", "chrom", "loc.start", "loc.end", "num.mark", "seg.mean".
+#'
+#' @format ## `raw_TCGA_WES_copynumber_data`
+#' A 214622 by 6 matrix
+"raw_TCGA_WES_copynumber_data"
+
 
