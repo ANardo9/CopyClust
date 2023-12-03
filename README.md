@@ -19,6 +19,14 @@ install.packages("iC10")
 library(iC10)
 ```
 
+## Example
+
+The package contains a sample data set that can be used to explore how the package works:
+
+```R
+formatted_data = CC_format(test_data_raw)
+IntClust_labels = CopyClust(formatted_data)
+```
 
 ## Authors
 
