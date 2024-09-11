@@ -3,7 +3,7 @@ library(ggplot2)
 
 load_all()
 
-load("~/Desktop/Caldas Lab/Caldas Lab/Datatest_CopyClust.RData")
+# load("./data/test_data_raw.rda")
 
 features = CC_format(Y, reference_genome = "hg19", probes = 26050)
 
