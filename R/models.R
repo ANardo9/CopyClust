@@ -239,5 +239,3 @@ CC_format = function(data_input, reference_genome = "hg18", probes = 100000) {
   }
 }
 
-
-CC_format(test_data_raw, reference_genome="hg18")

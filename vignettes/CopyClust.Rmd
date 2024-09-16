@@ -18,4 +18,22 @@ knitr::opts_chunk$set(
 library(CopyClust)
 ```
 
-The CopyClust package implements an XGBoost-based classifier trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number data alone. This package serves as an alternative to the iC10 package developed by Rueda et al. for the classification of breast cancer samples into integrative clusters when gene expression data is unavailable. 
+The CopyClust package implements an XGBoost-based classifier trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number data alone. This package serves as an alternative to the iC10 package developed by Rueda et al. for the classification of breast cancer samples into integrative clusters when gene expression data is unavailable.
+
+The `CC_format()` function takes in a data frame of data generated from BioConductor's [DNAcopy](https://bioconductor.org/packages/release/bioc/html/DNAcopy.html) ouput as the `data` parameter. A `reference_genome` parameter can be one of "hg18", "hg19" or "hg38" to format the genomic ranges for the `CopyClust()` function, if no value is passed "hg18" will be used. A `probe` parameter sets the number of probes used to calculate feature values, with a default value of 100000. Higher probe counts will decrease processing speed. Selecting a value higher than the number of probes available will result in an error. `CC_format()` returns a data frame with sample IDs as rows and the 478 un-scaled features as columns.
+
+```{r eval=FALSE}
+data(test_data_raw)
+head(test_data_raw)
+dim(test_data_raw)
+formatted_data <- CC_format(test_data_raw, reference_genome="hg19", probes=100000)
+dim(formatted_data)
+```
+
+The `CopyClust()` function applies an XGBoost-based classifier trained on the copy number profiles of the METABRIC cohort to predict integrative cluster label based on copy number data alone in either a 10-class model or 6-class binary approach. Feature scaling is handled before classification, retaining accuracy in small sample sizes. The `data_input` parameter is a data frame that has sample IDs as rows the 478 un-scaled features as columns, such a data frame is returned from `CC_format()`. The `model_approach` parameter can be either `10C` or `6C` for a 10-class model or 6-class binary approach, respectively. `CopyClust()` returns a named numeric vector of predicted integrative cluster labels the same length of number of samples provided with sample ID as row name.
+
+```{r eval=FALSE}
+pred_clusters <- CopyClust(formatted_data)
+dim(pred_clusters)
+
+```
